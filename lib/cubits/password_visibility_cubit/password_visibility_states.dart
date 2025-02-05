@@ -1,0 +1,5 @@
+class PasswordVisibilityStates {}
+class PasswordVisibilityInitialState extends PasswordVisibilityStates{}
+class PasswordVisibilityLoadingState extends PasswordVisibilityStates{}
+class PasswordVisibilitySuccessState extends PasswordVisibilityStates{}
+class PasswordVisibilityFailureState extends PasswordVisibilityStates{}

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,35 +18,33 @@ class ApiService {
   }
 
 
-  Future<dynamic> post ({
+  Future<dynamic> post({
     required String url,
-    @required dynamic body,
-    //@required dynamic headers / query,
-    @required String? token,
-  }) async{
-    Map<String,String> headers={
-      "Content-Type":"application/json",
+    required dynamic body,
+    String? token,
+  }) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'lang': 'en',
+      if (token != null) 'Authorization': token, // Optional token
     };
 
-    if(token!=null) headers.addAll({'Authorization':'Bearer $token'});
+    // Ensure the body is encoded as a JSON string
+    String jsonBody = jsonEncode(body);
 
-    http.Response response =
-    await http.post(Uri.parse(url),
-        body: body,
-        headers:headers
-        );
+    http.Response response = await http.post(
+      Uri.parse("https://student.valuxapps.com/api/$url"),
+      body: jsonBody, // Send the JSON-encoded body
+      headers: headers,
+    );
 
-
-    if(response.statusCode==200){
+    if (response.statusCode == 200) {
       return jsonDecode(response.body);
-    }
-    else {
+    } else {
       throw Exception(
-          'there is a problem with status code ${response.statusCode}, and with body: ${jsonDecode(response.body)}');
-
+          'There is a problem with status code ${response.statusCode}, and with body: ${jsonDecode(response.body)}');
     }
   }
-
 
   Future<dynamic> put ({
     required String url,

@@ -4,9 +4,9 @@ import 'package:shop_app/views/components/custom_elevated_button.dart';
 import 'package:shop_app/views/components/custom_text_form_field.dart';
 import 'package:shop_app/views/login/login_view.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterView extends StatelessWidget {
   static const String routeName = 'RegisterView';
-  const RegisterScreen({super.key});
+  const RegisterView({super.key});
 
   @override
   Widget build(BuildContext context) {

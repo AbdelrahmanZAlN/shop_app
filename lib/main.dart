@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/my_theme_data.dart';
 import 'package:shop_app/views/home/home_view.dart';
 import 'package:shop_app/views/login/login_view.dart';
 import 'package:shop_app/views/register/register_view.dart';
 
+import 'simple_bloc_observer.dart';
 import 'views/onboarding/onboarding_view.dart';
 
 void main() {
+  Bloc.observer = SimpleBlocObserver();
   runApp(const MyApp());
 }
 
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
         OnboardingView.routeName : (_)=> const OnboardingView(),
         HomeView.routeName : (_)=> const HomeView(),
         LoginView.routeName : (_)=> const LoginView(),
-        RegisterScreen.routeName : (_) => const RegisterScreen(),
+        RegisterView.routeName : (_) => const RegisterView(),
       },
     );
   }
