@@ -40,13 +40,16 @@ class _LoginViewState extends State<LoginView> {
         )
       ] ,
       child: BlocConsumer<LoginCubit, LoginStates>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if(state is LoginSuccessState){
-            if(state.response.status){
-              var userData = UserDataModel.fromJson(state.response.data);
+            if(state.response.status)  {
+              // var userData = UserDataModel.fromJson(state.response.data);
+              UserDataModel? user = state.response.data;
+              debugPrint("${state.response}");
+              debugPrint("${state.response.data}");
+              await CacheHelper.saveData(key: kUserToken, value: user?.token);
               DialogUtils.showToast(context:context,message:state.response.message,toastLength:  Toast.LENGTH_SHORT);
-              CacheHelper.saveData(key: kUserToken, value: userData.token);
-              debugPrint(userData.token);
+              //debugPrint(userData.token);
               Navigator.pushReplacementNamed(context, HomeView.routeName);
             }
             else{

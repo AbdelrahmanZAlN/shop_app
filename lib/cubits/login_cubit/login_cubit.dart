@@ -54,11 +54,14 @@ class LoginCubit extends Cubit<LoginStates>{
       );
 
 
-      if (response != null && response is Map<String, dynamic>) {
-        emit(LoginSuccessState(LoginModel.fromJson(response)));
+      if (response == null) {
+        emit(LoginFailureState("No response from server"));
+      } else if (response is! Map<String, dynamic>) {
+        emit(LoginFailureState("Unexpected response format"));
       } else {
-        emit(LoginFailureState("Invalid response format"));
+        emit(LoginSuccessState(LoginModel.fromJson(response)));
       }
+
     } catch (e) {
       emit(LoginFailureState(e.toString()));
     }

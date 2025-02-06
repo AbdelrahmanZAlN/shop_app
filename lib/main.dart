@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/cubits/home_cubit/home_cubit.dart';
 import 'package:shop_app/my_theme_data.dart';
 import 'package:shop_app/service/local/cache_helper.dart';
 import 'package:shop_app/views/home/home_view.dart';
@@ -42,16 +43,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: MyThemeData.lightTheme,
-      initialRoute: initialRouteName,
-      routes:{
-        OnboardingView.routeName : (_)=> const OnboardingView(),
-        HomeView.routeName : (_)=> const HomeView(),
-        LoginView.routeName : (_)=> const LoginView(),
-        RegisterView.routeName : (_) => const RegisterView(),
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeCubit>(
+          create: (context) => HomeCubit(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: MyThemeData.lightTheme,
+        initialRoute: initialRouteName,
+        routes:{
+          OnboardingView.routeName : (_)=> const OnboardingView(),
+          HomeView.routeName : (_)=> const HomeView(),
+          LoginView.routeName : (_)=> const LoginView(),
+          RegisterView.routeName : (_) => const RegisterView(),
+        },
+      ),
     );
   }
 }
