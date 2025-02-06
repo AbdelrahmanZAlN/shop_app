@@ -1,4 +1,4 @@
-import 'package:shop_app/api/api_service.dart';
+import 'package:shop_app/service/api/api_service.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/cubits/login_cubit/login_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

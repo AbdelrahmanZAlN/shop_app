@@ -1,14 +1,18 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/constants.dart';
 import 'package:shop_app/cubits/login_cubit/login_cubit.dart';
 import 'package:shop_app/cubits/login_cubit/login_states.dart';
 import 'package:shop_app/cubits/password_visibility_cubit/password_visibility_cubit.dart';
 import 'package:shop_app/cubits/password_visibility_cubit/password_visibility_states.dart';
 import 'package:shop_app/dialog_utils.dart';
+import 'package:shop_app/models/user_data_model.dart';
+import 'package:shop_app/service/local/cache_helper.dart';
 import 'package:shop_app/views/components/custom_elevated_button.dart';
 import 'package:shop_app/views/components/custom_text_form_field.dart';
+import 'package:shop_app/views/home/home_view.dart';
 import 'package:shop_app/views/register/register_view.dart';
 
 
@@ -39,17 +43,21 @@ class _LoginViewState extends State<LoginView> {
         listener: (context, state) {
           if(state is LoginSuccessState){
             if(state.response.status){
-              debugPrint(state.response.message);
-              DialogUtils.showToast(context,state.response.message);
+              var userData = UserDataModel.fromJson(state.response.data);
+              DialogUtils.showToast(context:context,message:state.response.message,toastLength:  Toast.LENGTH_SHORT);
+              CacheHelper.saveData(key: kUserToken, value: userData.token);
+              debugPrint(userData.token);
+              Navigator.pushReplacementNamed(context, HomeView.routeName);
             }
             else{
               debugPrint(state.response.message);
-              DialogUtils.showToast(context,state.response.message);
+              // DialogUtils.showToast(context: context,message: state.response.message,toastLength: Toast.LENGTH_LONG);
+              DialogUtils.showLongToast(context, state.response.message);
             }
           }
           else if (state is LoginFailureState){
             debugPrint(state.errorMessage);
-            DialogUtils.showToast(context,state.errorMessage);
+            DialogUtils.showToast(context:context,message:state.errorMessage,toastLength:  Toast.LENGTH_LONG);
 
           }
 
@@ -210,13 +218,13 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
-
-  void login() {
-    if (formKey.currentState!.validate()) {
-      BlocProvider.of<LoginCubit>(context).userLogin(
-        email: email!,
-        password: password!,
-      );
-    }
-  }
+  //
+  // void login() {
+  //   if (formKey.currentState!.validate()) {
+  //     BlocProvider.of<LoginCubit>(context).userLogin(
+  //       email: email!,
+  //       password: password!,
+  //     );
+  //   }
+  // }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/constants.dart';
+import 'package:shop_app/service/local/cache_helper.dart';
 import 'package:shop_app/views/login/login_view.dart';
 import 'package:shop_app/views/onboarding/first_tab.dart';
 import 'package:shop_app/views/onboarding/second_tab.dart';
@@ -36,7 +37,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               alignment: AlignmentDirectional.centerEnd,
               child: TextButton(
                 onPressed: (){
-                  Navigator.pushReplacementNamed(context, LoginView.routeName);
+                  finishOnboarding(context);
                 },
                   child: const Text(
                     'Skip',
@@ -84,7 +85,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   shape: const CircleBorder(),
                   onPressed: (){
                     if(isLast){
-                      Navigator.pushReplacementNamed(context, LoginView.routeName);
+                      finishOnboarding(context);
                       return;
                     }
                     pageController.nextPage(
@@ -104,4 +105,16 @@ class _OnboardingViewState extends State<OnboardingView> {
       ),
     );
   }
+  void finishOnboarding(BuildContext context) async {
+    bool isOnboarding = false;
+    await CacheHelper.saveData(key: "isOnboarding", value: isOnboarding);
+
+    //if (!context.mounted) return; // Ensure context is still valid
+    Navigator.pushReplacementNamed(context, LoginView.routeName);
+  }
+
+// Call it like this in your widget:
+//   finishOnboarding(context);
+
+
 }
